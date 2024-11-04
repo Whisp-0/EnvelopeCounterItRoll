@@ -3,7 +3,6 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-	"log"
 	"net/http"
 	"os"
 	"strings"
@@ -102,9 +101,16 @@ func processPost(postID int, wg *sync.WaitGroup, m *sync.Mutex) {
 func main() {
 
 	if err := godotenv.Load(); err != nil {
-		log.Fatal("Error loading .env file")
+		fmt.Println("Error loading .env file")
+
 	}
 	accessToken = os.Getenv("ACCESS_TOKEN")
+
+	if accessToken == "" {
+		// Если проблемы с .env, можно вставить токен сюда
+		accessToken = ""
+	}
+
 	start := time.Now()
 
 	postsCount, _ := getPostsCount()
